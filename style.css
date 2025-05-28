@@ -1,0 +1,60 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+body{
+    margin: 20px 0px;
+}
+.form-bookmark{
+    display: flex;
+    flex-direction: column;
+  justify-content: center;
+  align-items: center;
+width: 100%;
+ 
+
+}
+.form-bookmark input{
+    width: 400px;
+    height: 40px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+button{
+    width: 100px;
+    height: 40px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.delete-All{
+    margin: 20px;
+}
+.bookmarks-table{
+    width: 90%;
+    border-collapse: collapse;
+    margin: 50px;
+    text-align: center;
+
+}
+.bookmarks-thead{
+    background-color: #4441cb;
+    color: white;
+}
+.bookmarks-thead th{
+    padding: 10px;
+}
+.bookmarks-tbody  td{
+    border-bottom: 1px solid #ccc;
+    padding: 10px;
+}
+.no-data{
+    text-align: center; 
+    font-weight: bold;
+}
