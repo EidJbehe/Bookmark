@@ -1,37 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link rel="stylesheet" href="./style.css" />
-  </head>
-  <body>
-    <main>
-      <form class="form-bookmark">
-        <input type="text" name="website_Name" placeholder="website_Name" />
-        <input type="text" name="website_URL" placeholder="website_URL" />
-        <input type="email" name="email" placeholder="Your-email" />
-        <input type="password"name="password" placeholder="Your-password" />
-        <button type="submit" class="btn-submit">Save</button>
-        <button  class="delete-All">Delete All</button>
-      </form>
 
-      <table class="bookmarks-table">
-        <thead class="bookmarks-thead">
-          <tr>
-            <th>Website Name</th>
-            <th>Website URL</th>
-            <th>Website Email</th>
-            <th>Website Password</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody class="bookmarks-tbody">
-          
-        </tbody>
-      </table>
-    </main>
-    <script src="./main.js"></script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+
+<body>
+  <main>
+    <form class="form-bookmark">
+      <input type="text" name="website_Name" placeholder="website_Name" />
+      <div class="text-danger" id="name-error"></div>
+      <input type="text" name="website_URL" placeholder="website_URL" />
+      <div class="text-danger" id="url-error"></div>
+
+      <input type="email" name="email" placeholder="Your-email" />
+     <div class="text-danger" id="email-error"></div>
+      <input type="password" name="password" placeholder="Your-password" />
+      <div class="text-danger" id="password-error"></div>
+      <button type="submit" class="btn-submit">Add</button>
+      <button class="delete-All">Delete All</button>
+    </form>
+    <div class="search-container">
+      <input type="text" class="search-input form-bookmark" placeholder="Search by site name .." />
+    </div>
+
+    <table class="bookmarks-table">
+      <thead class="bookmarks-thead">
+        <tr>
+          <th>Website Name</th>
+          <th>Website URL</th>
+          <th>Website Email</th>
+          <th>Website Password</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody class="bookmarks-tbody"></tbody>
+    </table>
+  </main>
+  <script src="./main.js"></script>
+</body>
+
 </html>

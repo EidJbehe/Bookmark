@@ -1,10 +1,88 @@
 const formBookmark = document.querySelector(".form-bookmark");
 const deleteAll = document.querySelector(".delete-All");
+const addBtn=document.querySelector(".btn-submit");;
+const searchInput = document.querySelector(".search-input");
+const nameError = document.getElementById("name-error");
+const urlError = document.getElementById("url-error");
+const emailError = document.getElementById("email-error");
+const passwordError = document.getElementById("password-error");
+
 let sites = JSON.parse(localStorage.getItem("sites")) || [];
 displaySites();
+const validSitesName = () => {
 
-formBookmark.onsubmit = function (e) {
+const regex = /^[A-Z][a-zA-Z]{2,29}$/;
+  const input = document.querySelector('input[name="website_Name"]');
+  if (!regex.test(input.value)) {
+    input.classList.remove("is-valid");
+    input.classList.add("is-invalid");
+    nameError.textContent="Invalid Site Name: Must start with an uppercase letter and be 3-30 letters long. ";
+    return false;
+  } else {
+    input.classList.remove("is-invalid");
+    input.classList.add("is-valid");
+   nameError.textContent="";
+    return true;
+  }
+};
+
+const validURL = () => {
+  const regex = /^(https?:\/\/)?([\w-]+(\.[\w-]+)+)(\/[\w-./?%&=]*)?$/;
+  const input = document.querySelector('input[name="website_URL"]');
+  if (!regex.test(input.value)) {
+    input.classList.remove("is-valid");
+    input.classList.add("is-invalid");
+    urlError.textContent="Invalid URL: Please enter a valid URL.";
+    return false;
+  } else {
+    input.classList.remove("is-invalid");
+    input.classList.add("is-valid");
+  urlError.textContent="";
+    return true;
+  }
+};
+const validEmail = () => {
+  const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  const input = document.querySelector('input[name="email"]');
+  if (!regex.test(input.value)) {
+    input.classList.remove("is-valid");
+    input.classList.add("is-invalid");
+   emailError.textContent="Invalid Email: Please enter a valid email address.";
+    return false;
+  } else {
+    input.classList.remove("is-invalid");
+    input.classList.add("is-valid");
+    emailError.textContent="";
+    return true;
+  }
+};
+const validPassword = () => {
+  const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,20}$/;
+  const input = document.querySelector('input[name="password"]');
+  if (!regex.test(input.value)) {
+    input.classList.remove("is-valid");
+    input.classList.add("is-invalid");
+    passwordError.textContent="Invalid Password: 8-20 characters, at least one uppercase letter, one lowercase letter, one number, and one special character.";
+    return false;
+  } else {
+    input.classList.remove("is-invalid");
+    input.classList.add("is-valid");
+    passwordError.textContent="";
+    return true;
+  }
+};
+
+formBookmark.addEventListener("submit", (e) => {
   e.preventDefault();
+    const isNameValid = validSitesName();
+  const isURLValid = validURL();
+  const isEmailValid = validEmail();
+  const isPasswordValid = validPassword();
+
+  const isValid = isNameValid && isURLValid && isEmailValid && isPasswordValid;
+
+  if (!isValid) {
+   return;}
   const site = {
     website_Name: document
       .querySelector('input[name="website_Name"]')
@@ -15,17 +93,25 @@ formBookmark.onsubmit = function (e) {
     email: document.querySelector('input[name="email"]').value.trim(),
     password: document.querySelector('input[name="password"]').value.trim(),
   };
+  const editIndex = formBookmark.getAttribute("edit-index");
+  if(editIndex !==null){
+    sites[editIndex] = site;
+    formBookmark.removeAttribute("edit-index");
 
-  sites.push(site);
+  }
+  else 
+  {
+      sites.push(site);
+  }
+
   localStorage.setItem("sites", JSON.stringify(sites));
   formBookmark.reset();
   displaySites();
-};
+});
 
-function displaySites() {
+function displaySites(sitesArray = sites) {
   const tableBody = document.querySelector(".bookmarks-tbody");
-
-  const validSites = sites.filter(
+  const validSites = sitesArray.filter(
     (site) =>
       site &&
       site.website_Name &&
@@ -51,6 +137,7 @@ function displaySites() {
             <td>${site.email}</td>
             <td>${site.password}</td>
             <td><button onclick="deleteItem(${index})">Delete</button></td>
+            <td><button onclick="UpdateItem(${index})">Update</button></td>
           </tr>`;
     })
     .join("");
@@ -61,7 +148,17 @@ function deleteItem(index) {
   localStorage.setItem("sites", JSON.stringify(sites));
   displaySites();
 }
-
+function UpdateItem(index) {
+  const site = sites[index];
+  
+  document.querySelector('input[name="website_Name"]').value =
+    site.website_Name;
+  document.querySelector('input[name="website_URL"]').value = site.website_URL;
+  document.querySelector('input[name="email"]').value = site.email;
+  document.querySelector('input[name="password"]').value = site.password;
+   document.querySelector(".form-bookmark").setAttribute("edit-index", index);
+addBtn.textContent="Update";
+}
 deleteAll.onclick = function () {
   if (confirm("Are you sure you want to delete all bookmarks?")) {
     localStorage.removeItem("sites");
@@ -69,3 +166,11 @@ deleteAll.onclick = function () {
     displaySites();
   }
 };
+searchInput.addEventListener("input", () => {
+  const filterSearch = searchInput.value.toLowerCase();
+  const filteredSites = sites.filter((site) => {
+    return site.website_Name.toLowerCase().includes(filterSearch);
+  });
+  displaySites(filteredSites);
+  
+}); 
